@@ -1,0 +1,22 @@
+# Notes {#notes}
+
+* [github.com/r-lib/actions:/examples](https://github.com/r-lib/actions/tree/master/examples)
+
+> RMarkdown workflows:
+> 
+> - [`render-rmarkdown`](#render-rmarkdown) - Render one or more Rmarkdown files when they change and commit the result.
+
+```r
+usethis::use_github_action("render-rmarkdown")
+```
+
+```
+✓ Setting active project to '/Users/bbest/github/bbest/gh-action-test-rmd'
+✓ Creating '.github/'
+✓ Adding '^\\.github$' to '.Rbuildignore'
+✓ Adding '*.html' to '.github/.gitignore'
+✓ Creating '.github/workflows/'
+✓ Writing '.github/workflows/render-rmarkdown.yaml'
+● Learn more at <https://github.com/r-lib/actions/blob/master/examples/README.md>
+```
+

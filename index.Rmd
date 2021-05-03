@@ -34,3 +34,9 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+
+Slides...
+
+## Slides
+
+`r knitr::include_url("./slides/index.html")`
