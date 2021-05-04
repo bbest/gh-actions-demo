@@ -1,10 +1,10 @@
 # Notes {#notes}
 
 * [github.com/r-lib/actions:/examples](https://github.com/r-lib/actions/tree/master/examples)
-
-> RMarkdown workflows:
-> 
-> - [`render-rmarkdown`](#render-rmarkdown) - Render one or more Rmarkdown files when they change and commit the result.
+  
+  > RMarkdown workflows:
+  > 
+  > - [`render-rmarkdown`](#render-rmarkdown) - Render one or more Rmarkdown files when they change and commit the result.
 
 ```r
 usethis::use_github_action("render-rmarkdown")
@@ -20,3 +20,48 @@ usethis::use_github_action("render-rmarkdown")
 ● Learn more at <https://github.com/r-lib/actions/blob/master/examples/README.md>
 ```
 
+
+```r
+renv::snapshot()
+```
+
+If you get an error:
+
+```
+Error: Error in loadNamespace(name) : there is no package called ‘rmarkdown’
+```
+
+
+
+* [GitHub Actions workflow not triggering at scheduled time | Upptime](https://upptime.js.org/blog/2021/01/22/github-actions-schedule-not-working/)
+
+
+- [API Query Browser: EIA Data Sets > U.S. Electric System Operating Data > Day-ahead demand forecast > Balancing authorities > California Independent System Operator (CISO)](https://www.eia.gov/opendata/qb.php?category=3389873&sdid=EBA.CISO-ALL.DF.HL)
+
+- SERIES NAME: Day-ahead demand forecast for California Independent System Operator (CISO), hourly - local time
+
+- https://api.eia.gov/series/?api_key=5deaec228369f8806a73a6684f89cc74&series_id=EBA.CISO-ALL.DF.HL
+
+ # megawatthours
+ 
+ series  <- list(
+  id    = "EBA.CAL-ALL.NG.SUN.H",
+  name  = "Net generation from solar for California, hourly",
+  units = "MWh")
+
+- [API Query Browser: EIA Data Sets > U.S. Electric System Operating Data > Day-ahead demand forecast > Balancing authorities > California Independent System Operator (CISO)](https://www.eia.gov/opendata/qb.php?category=3389873&sdid=EBA.CAL-ALL.NG.SUN.H)
+
+
+After doing Rmd, need to run:
+
+
+```r
+renv::snapshot()
+```
+
+
+- https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
+
+> Note: The `schedule` event can be delayed during periods of high loads of GitHub Actions workflow runs. High load times include the start of every hour. To decrease the chance of delay, schedule your workflow to run at a different time of the hour.
+
+Q: What's the cron string for every 3 hours?

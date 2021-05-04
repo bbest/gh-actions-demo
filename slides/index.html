@@ -1,741 +1,281 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Presentation Ninja</title>
+    <title>Automatically Update your Report with Github Actions</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Yihui Xie" />
-    <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
-    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
-    <script src="libs/jquery/jquery.min.js"></script>
-    <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet/leaflet.js"></script>
-    <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
-    <script src="libs/proj4/proj4.min.js"></script>
-    <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
-    <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet-binding/leaflet.js"></script>
-    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
-    <script src="libs/datatables-binding/datatables.js"></script>
-    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
-    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
-    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
-    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <meta name="author" content="Dr. Ben Best \bullet @ben_d_best" />
+    <meta name="date" content="2021-05-04" />
+    <link href="site_libs/remark-css/default.css" rel="stylesheet" />
+    <link href="site_libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="site_libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <script src="site_libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="site_libs/jquery/jquery.min.js"></script>
+    <link href="site_libs/dygraphs/dygraph.css" rel="stylesheet" />
+    <script src="site_libs/dygraphs/dygraph-combined.js"></script>
+    <script src="site_libs/dygraphs/shapes.js"></script>
+    <script src="site_libs/moment/moment.js"></script>
+    <script src="site_libs/moment-timezone/moment-timezone-with-data.js"></script>
+    <script src="site_libs/moment-fquarter/moment-fquarter.min.js"></script>
+    <script src="site_libs/dygraphs-binding/dygraphs.js"></script>
+    <script src="site_libs/viz/viz.js"></script>
+    <link href="site_libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+    <script src="site_libs/grViz-binding/grViz.js"></script>
+    <link rel="stylesheet" href="libs/styles.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Presentation Ninja
-## ⚔<br/>with xaringan
-### Yihui Xie
-### RStudio, PBC
-### 2016/12/12 (updated: 2021-05-03)
+# Automatically Update your Report with Github Actions
+## Teaching Demonstration for UCSB Masters in Env. Data Science
+### <a href="mailto:ben@ecoquants.com">Dr. Ben Best</a> <span class="math inline">•</span> <a href="https://twitter.com/ben_d_best">@ben_d_best</a>
+### <a href="https://EcoQuants.com">EcoQuants.com</a>
+### 2021-05-04
 
 ---
 
 
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
 
 
+class: top, left
+
+## May the Fourth be with You!
+
+&lt;img src="../images/starwars-rey-rstats_sz-m.png" width="60%" style="display: block; margin: auto;" /&gt;
+Credit: Artwork from @juliesquid for @openscapes (illustrated by @allison_horst).
 
 ???
 
-Image credit: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sharingan_triple.svg)
-
----
-class: center, middle
-
-# xaringan
-
-### /ʃaː.'riŋ.ɡan/
-
----
-class: inverse, center, middle
-
-# Get Started
+- Presentation shortcuts:
+  - `c`: clone synchronized window
+  - `p`: presenter notes
+- Star Wars figure:
+  - Ok, so it's May 4th -- couldn't resist "Star Wars Day" reference
+  - empower students with tools
+  - work with community, be inclusive
 
 ---
 
-# Hello World
+## Course
+### EDS 214: Analytical Workflows and Scientific Reproducibility
 
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
+_2 units, offered in Summer_
+
+The generation and analysis of environmental data is often a complex, multi-step process that may involves the &lt;mark&gt;collaboration&lt;/mark&gt; of many people. Increasingly tools that document help to organize and document &lt;mark&gt;workflows&lt;/mark&gt; are being used to ensure &lt;mark&gt;reproducibility&lt;/mark&gt; and transparency of the results. This course will introduce students to conceptual organization of workflows as a way to conduct reproducible analyses, as well as various software tools that help users to manage multi-step processes that requires tools for storing, managing and &lt;mark&gt;sharing&lt;/mark&gt; workflows, code, documents and data, including &lt;mark&gt;GitHub&lt;/mark&gt;, Pegasus, remake and Kepler.
+
+---
+
+## Example
+### Solar in Cali &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:orange;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+
+
+<div id="htmlwidget-387b839c315632cb42fe" style="width:100%;height:270px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-387b839c315632cb42fe">{"x":{"attrs":{"title":"Net generation from solar for California, hourly","ylabel":"MWh","labels":["hour","EBA.CAL.ALL.NG.SUN.H"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}}},"scale":"hourly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2021-04-28T07:00:00.000Z","2021-04-28T08:00:00.000Z","2021-04-28T09:00:00.000Z","2021-04-28T10:00:00.000Z","2021-04-28T11:00:00.000Z","2021-04-28T12:00:00.000Z","2021-04-28T13:00:00.000Z","2021-04-28T14:00:00.000Z","2021-04-28T15:00:00.000Z","2021-04-28T16:00:00.000Z","2021-04-28T17:00:00.000Z","2021-04-28T18:00:00.000Z","2021-04-28T19:00:00.000Z","2021-04-28T20:00:00.000Z","2021-04-28T21:00:00.000Z","2021-04-28T22:00:00.000Z","2021-04-28T23:00:00.000Z","2021-04-29T00:00:00.000Z","2021-04-29T01:00:00.000Z","2021-04-29T02:00:00.000Z","2021-04-29T03:00:00.000Z","2021-04-29T04:00:00.000Z","2021-04-29T05:00:00.000Z","2021-04-29T06:00:00.000Z","2021-04-29T07:00:00.000Z","2021-04-29T08:00:00.000Z","2021-04-29T09:00:00.000Z","2021-04-29T10:00:00.000Z","2021-04-29T11:00:00.000Z","2021-04-29T12:00:00.000Z","2021-04-29T13:00:00.000Z","2021-04-29T14:00:00.000Z","2021-04-29T15:00:00.000Z","2021-04-29T16:00:00.000Z","2021-04-29T17:00:00.000Z","2021-04-29T18:00:00.000Z","2021-04-29T19:00:00.000Z","2021-04-29T20:00:00.000Z","2021-04-29T21:00:00.000Z","2021-04-29T22:00:00.000Z","2021-04-29T23:00:00.000Z","2021-04-30T00:00:00.000Z","2021-04-30T01:00:00.000Z","2021-04-30T02:00:00.000Z","2021-04-30T03:00:00.000Z","2021-04-30T04:00:00.000Z","2021-04-30T05:00:00.000Z","2021-04-30T06:00:00.000Z","2021-04-30T07:00:00.000Z","2021-04-30T08:00:00.000Z","2021-04-30T09:00:00.000Z","2021-04-30T10:00:00.000Z","2021-04-30T11:00:00.000Z","2021-04-30T12:00:00.000Z","2021-04-30T13:00:00.000Z","2021-04-30T14:00:00.000Z","2021-04-30T15:00:00.000Z","2021-04-30T16:00:00.000Z","2021-04-30T17:00:00.000Z","2021-04-30T18:00:00.000Z","2021-04-30T19:00:00.000Z","2021-04-30T20:00:00.000Z","2021-04-30T21:00:00.000Z","2021-04-30T22:00:00.000Z","2021-04-30T23:00:00.000Z","2021-05-01T00:00:00.000Z","2021-05-01T01:00:00.000Z","2021-05-01T02:00:00.000Z","2021-05-01T03:00:00.000Z","2021-05-01T04:00:00.000Z","2021-05-01T05:00:00.000Z","2021-05-01T06:00:00.000Z","2021-05-01T07:00:00.000Z","2021-05-01T08:00:00.000Z","2021-05-01T09:00:00.000Z","2021-05-01T10:00:00.000Z","2021-05-01T11:00:00.000Z","2021-05-01T12:00:00.000Z","2021-05-01T13:00:00.000Z","2021-05-01T14:00:00.000Z","2021-05-01T15:00:00.000Z","2021-05-01T16:00:00.000Z","2021-05-01T17:00:00.000Z","2021-05-01T18:00:00.000Z","2021-05-01T19:00:00.000Z","2021-05-01T20:00:00.000Z","2021-05-01T21:00:00.000Z","2021-05-01T22:00:00.000Z","2021-05-01T23:00:00.000Z","2021-05-02T00:00:00.000Z","2021-05-02T01:00:00.000Z","2021-05-02T02:00:00.000Z","2021-05-02T03:00:00.000Z","2021-05-02T04:00:00.000Z","2021-05-02T05:00:00.000Z","2021-05-02T06:00:00.000Z","2021-05-02T07:00:00.000Z","2021-05-02T08:00:00.000Z","2021-05-02T09:00:00.000Z","2021-05-02T10:00:00.000Z","2021-05-02T11:00:00.000Z","2021-05-02T12:00:00.000Z","2021-05-02T13:00:00.000Z","2021-05-02T14:00:00.000Z","2021-05-02T15:00:00.000Z","2021-05-02T16:00:00.000Z","2021-05-02T17:00:00.000Z","2021-05-02T18:00:00.000Z","2021-05-02T19:00:00.000Z","2021-05-02T20:00:00.000Z","2021-05-02T21:00:00.000Z","2021-05-02T22:00:00.000Z","2021-05-02T23:00:00.000Z","2021-05-03T00:00:00.000Z","2021-05-03T01:00:00.000Z","2021-05-03T02:00:00.000Z","2021-05-03T03:00:00.000Z","2021-05-03T04:00:00.000Z","2021-05-03T05:00:00.000Z","2021-05-03T06:00:00.000Z","2021-05-03T07:00:00.000Z","2021-05-03T08:00:00.000Z","2021-05-03T09:00:00.000Z","2021-05-03T10:00:00.000Z","2021-05-03T11:00:00.000Z","2021-05-03T12:00:00.000Z","2021-05-03T13:00:00.000Z","2021-05-03T14:00:00.000Z","2021-05-03T15:00:00.000Z","2021-05-03T16:00:00.000Z","2021-05-03T17:00:00.000Z","2021-05-03T18:00:00.000Z","2021-05-03T19:00:00.000Z","2021-05-03T20:00:00.000Z","2021-05-03T21:00:00.000Z","2021-05-03T22:00:00.000Z","2021-05-03T23:00:00.000Z","2021-05-04T00:00:00.000Z","2021-05-04T01:00:00.000Z","2021-05-04T02:00:00.000Z","2021-05-04T03:00:00.000Z","2021-05-04T04:00:00.000Z","2021-05-04T05:00:00.000Z","2021-05-04T06:00:00.000Z","2021-05-04T07:00:00.000Z"],[12,5,4,4,4,3,8,4067,10388,12586,13536,13903,13733,13600,13880,13017,12816,10594,7783,1380,987,23,23,23,23,20,20,20,20,20,35,4074,9821,11957,12626,13332,13446,13716,13340,13073,12610,11436,7402,1315,950,21,21,21,21,20,17,4,4,4,32,4053,9455,12049,13076,14389,13619,13646,13027,13223,12270,10767,6315,953,679,6,6,6,6,4,4,3,2,2,7,2391,5844,8968,10108,10709,11276,11161,11530,11299,10290,9677,6080,1202,831,26,26,26,26,18,3,3,3,3,19,3825,6611,8491,9939,9929,10509,10436,10519,10790,11319,9672,7031,1343,981,9,9,9,9,5,5,5,5,5,65,4116,9788,12156,13315,13545,13704,13911,13598,13601,12923,11644,7675,1638,1217,17,7,7,7]]},"evals":[],"jsHooks":[]}</script>
+
+Source: [U.S. Energy Information Administration (EIA)](https://www.eia.gov/opendata/qb.php?category=3389873&amp;sdid=EBA.CAL-ALL.NG.SUN.H).
+
+???
+
+- Within last week
+
+---
+
+## Example
+### R Code &lt;svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:grey;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z"&gt;&lt;/path&gt;&lt;/svg&gt;
 
 
 ```r
-remotes::install_github("yihui/xaringan")
+# setup variables
+api_key &lt;- "5deaec228369f8806a73a6684f89cc74"
+series  &lt;- list(
+  id    = "EBA.CAL-ALL.NG.SUN.H",
+  name  = "Net generation from solar for California, hourly",
+  units = "MWh")
+
+# get data
+x &lt;- EIAdata::getEIA(series$id, api_key)
+tzone(x) &lt;- Sys.getenv("TZ")
+y &lt;- xts::last(x, "7 days")
+
+# plot data
+dygraphs::dygraph(y, ylab = series$units, main = series$name)
+```
+
+---
+
+
+## Motivation
+### How to make this report '_**Evergreen**_'? &lt;svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:green;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M378.31 378.49L298.42 288h30.63c9.01 0 16.98-5 20.78-13.06 3.8-8.04 2.55-17.26-3.28-24.05L268.42 160h28.89c9.1 0 17.3-5.35 20.86-13.61 3.52-8.13 1.86-17.59-4.24-24.08L203.66 4.83c-6.03-6.45-17.28-6.45-23.32 0L70.06 122.31c-6.1 6.49-7.75 15.95-4.24 24.08C69.38 154.65 77.59 160 86.69 160h28.89l-78.14 90.91c-5.81 6.78-7.06 15.99-3.27 24.04C37.97 283 45.93 288 54.95 288h30.63L5.69 378.49c-6 6.79-7.36 16.09-3.56 24.26 3.75 8.05 12 13.25 21.01 13.25H160v24.45l-30.29 48.4c-5.32 10.64 2.42 23.16 14.31 23.16h95.96c11.89 0 19.63-12.52 14.31-23.16L224 440.45V416h136.86c9.01 0 17.26-5.2 21.01-13.25 3.8-8.17 2.44-17.47-3.56-24.26z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+Normally on your personal computer (**PC**) &lt;svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M624 416H381.54c-.74 19.81-14.71 32-32.74 32H288c-18.69 0-33.02-17.47-32.77-32H16c-8.8 0-16 7.2-16 16v16c0 35.2 28.8 64 64 64h512c35.2 0 64-28.8 64-64v-16c0-8.8-7.2-16-16-16zM576 48c0-26.4-21.6-48-48-48H112C85.6 0 64 21.6 64 48v336h512V48zm-64 272H128V64h384v256z"&gt;&lt;/path&gt;&lt;/svg&gt;:
+
+- Open RStudio
+
+--
+
+- Knit Rmarkdown file to html
+
+--
+
+- Git commit &amp; push to Github, where website hosted
+
+--
+
+- Manually run, every month/week/day/hour ?! 😭
+
+--
+
+<div id="htmlwidget-fb8a87dcfbeb1631f11a" style="width:100%;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fb8a87dcfbeb1631f11a">{"x":{"diagram":"\n  digraph pc {\n    graph [layout = dot, rankdir = LR]\n  \n    node [shape = box, fontname = Helvetica, fontsize=20, height = 2 width = 2]\n    PC; Github\n  \n    node [shape = circle]\n    git [label = \"git push\"]\n  \n    # several \"edge\" statements\n    PC->git->Github\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+## Motivation
+### How to make this report '_**Evergreen**_'? &lt;svg viewBox="0 0 384 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:green;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M378.31 378.49L298.42 288h30.63c9.01 0 16.98-5 20.78-13.06 3.8-8.04 2.55-17.26-3.28-24.05L268.42 160h28.89c9.1 0 17.3-5.35 20.86-13.61 3.52-8.13 1.86-17.59-4.24-24.08L203.66 4.83c-6.03-6.45-17.28-6.45-23.32 0L70.06 122.31c-6.1 6.49-7.75 15.95-4.24 24.08C69.38 154.65 77.59 160 86.69 160h28.89l-78.14 90.91c-5.81 6.78-7.06 15.99-3.27 24.04C37.97 283 45.93 288 54.95 288h30.63L5.69 378.49c-6 6.79-7.36 16.09-3.56 24.26 3.75 8.05 12 13.25 21.01 13.25H160v24.45l-30.29 48.4c-5.32 10.64 2.42 23.16 14.31 23.16h95.96c11.89 0 19.63-12.52 14.31-23.16L224 440.45V416h136.86c9.01 0 17.26-5.2 21.01-13.25 3.8-8.17 2.44-17.47-3.56-24.26z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+Entrez **Github Actions** &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; (no PC needed)
+
+<div id="htmlwidget-ac2c84506b84277ac2dd" style="width:100%;height:100px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac2c84506b84277ac2dd">{"x":{"diagram":"\n  digraph github {\n    graph [layout = dot, rankdir = LR]\n  \n    node [shape = box, fontname = Helvetica, fontsize=20, height = 2 width = 2]\n    Github\n  \n    node [shape = circle, height = 1]\n    git [label = \"Github Action\"]\n  \n    # several \"edge\" statements\n    Github->git->Github\n  }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+--
+  
+Use Github Action to render the Rmarkdown:
+
+```r
+usethis::use_github_action("render-rmarkdown")
 ```
 
 --
-
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
-
-- Create a new R Markdown document from the menu `File -&gt; New File -&gt; R Markdown -&gt; From Template -&gt; Ninja Presentation`;&lt;sup&gt;1&lt;/sup&gt;
-
---
-
-- Click the `Knit` button to compile it;
-
---
-
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)&lt;sup&gt;2&lt;/sup&gt; "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
-
-.footnote[
-[1] 中文用户请看[这份教程](https://slides.yihui.org/xaringan/zh-CN.html)
-
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
-]
-
----
-background-image: url(https://github.com/yihui/xaringan/releases/download/v0.0.2/karl-moustache.jpg)
-background-position: 50% 50%
-class: center, bottom, inverse
-
-# You only live once!
+  
+```
+✓ Setting active project to '/Users/bbest/github/bbest/gh-action-test-rmd'
+✓ Creating '.github/'
+✓ Adding '^\\.github$' to '.Rbuildignore'
+✓ Adding '*.html' to '.github/.gitignore'
+✓ Creating '.github/workflows/'
+✓ Writing '.github/workflows/render-rmarkdown.yaml'
+● Learn more at &lt;https://github.com/r-lib/actions/blob/master/examples/README.md&gt;
+```
 
 ---
 
-# Hello Ninja
+## Yet another Markup Language (YAML)
 
-As a presentation ninja, you certainly should not be satisfied by the "Hello World" example. You need to understand more about two things:
+### Initial `render-rmarkdown.yaml`, `on.push`
 
-1. The [remark.js](https://remarkjs.com) library;
-
-1. The **xaringan** package;
-
-Basically **xaringan** injected the chakra of R Markdown (minus Pandoc) into **remark.js**. The slides are rendered by remark.js in the web browser, and the Markdown source needed by remark.js is generated from R Markdown (**knitr**).
-
----
-
-# remark.js
-
-You can see an introduction of remark.js from [its homepage](https://remarkjs.com). You should read the [remark.js Wiki](https://github.com/gnab/remark/wiki) at least once to know how to
-
-- create a new slide (Markdown syntax&lt;sup&gt;*&lt;/sup&gt; and slide properties);
-
-- format a slide (e.g. text alignment);
-
-- configure the slideshow;
-
-- and use the presentation (keyboard shortcuts).
-
-It is important to be familiar with remark.js before you can understand the options in **xaringan**.
-
-.footnote[[*] It is different with Pandoc's Markdown! It is limited but should be enough for presentation purposes. Come on... You do not need a slide for the Table of Contents! Well, the Markdown support in remark.js [may be improved](https://github.com/gnab/remark/issues/142) in the future.]
-
----
-background-image: url(https://github.com/yihui/xaringan/releases/download/v0.0.2/karl-moustache.jpg)
-background-size: cover
-class: center, bottom, inverse
-
-# I was so happy to have discovered remark.js!
-
----
-class: inverse, middle, center
-
-# Using xaringan
-
----
-
-# xaringan
-
-Provides an R Markdown output format `xaringan::moon_reader` as a wrapper for remark.js, and you can use it in the YAML metadata, e.g.
+`.github/workflows/`[`render-rmarkdown.yaml`](https://github.com/bbest/gh-action-test-rmd/blob/670e68f67ed2f768144702746b4b247b1144fb09/.github/workflows/render-rmarkdown.yaml) (commit:  `670e68f`)
 
 ```yaml
+on:
+  push:
+    paths:
+      - '**.Rmd' 
+```      
+
+Only updates when changes are sent with `git push`.
+
 ---
-title: "A Cool Presentation"
-output:
-  xaringan::moon_reader:
-    yolo: true
-    nature:
-      autoplay: 30000
----
+
+## Yet another Markup Language (YAML)
+
+### Initial `render-rmarkdown.yaml`, `jobs.build`
+
+`.github/workflows/`[`render-rmarkdown.yaml`](https://github.com/bbest/gh-action-test-rmd/blob/670e68f67ed2f768144702746b4b247b1144fb09/.github/workflows/render-rmarkdown.yaml) (commit:  `670e68f`)
+
+```yaml
+jobs:
+  build:
+    runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    ...
 ```
 
-See the help page `?xaringan::moon_reader` for all possible options that you can use.
+Uses "secrets" already in Github to update the repository of code.
 
 ---
 
-# remark.js vs xaringan
+## Yet another Markup Language (YAML)
 
-Some differences between using remark.js (left) and using **xaringan** (right):
+### Modify `render-rmarkdown.yaml`, `on.push|schedule`
 
-.pull-left[
-1. Start with a boilerplate HTML file;
+`.github/workflows/`[`render-rmarkdown.yaml`](https://github.com/bbest/gh-action-test-rmd/blob/main/.github/workflows/render-rmarkdown.yaml) (commit: latest)
 
-1. Plain Markdown;
 
-1. Write JavaScript to autoplay slides;
+```yaml
+on:
+  push:                
+  schedule:            
+    - cron: '0 * * * *'
+```  
 
-1. Manually configure MathJax;
-
-1. Highlight code with `*`;
-
-1. Edit Markdown source and refresh browser to see updated slides;
-]
-
-.pull-right[
-1. Start with an R Markdown document;
-
-1. R Markdown (can embed R/other code chunks);
-
-1. Provide an option `autoplay`;
-
-1. MathJax just works;&lt;sup&gt;*&lt;/sup&gt;
-
-1. Highlight code with `{{}}`;
-
-1. The RStudio addin "Infinite Moon Reader" automatically refreshes slides on changes;
-]
-
-.footnote[[*] Not really. See next page.]
-
----
-
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &amp;#36;\alpha+\beta$ renders `\(\alpha+\beta\)`. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-`$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$`
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
-
----
-
-# R Code
-
-
-```r
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-```
-
-```
-#               Estimate Std. Error   t value     Pr(&gt;|t|)
-# (Intercept) -17.579095  6.7584402 -2.601058 1.231882e-02
-# speed         3.932409  0.4155128  9.463990 1.489836e-12
-```
-
-```r
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
-```
-
-```
-# [1] "地爆天星" "天照"
-```
-
----
-
-# R Plots
-
-
-```r
-par(mar = c(4, 4, 1, .1))
-plot(cars, pch = 19, col = 'darkgray', las = 1)
-abline(fit, lwd = 2)
-```
-
-![](index_files/figure-html/cars-1.svg)&lt;!-- --&gt;
-
----
-
-# Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-
-```r
-knitr::kable(head(iris), format = 'html')
-```
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
----
-
-# HTML Widgets
-
-I have not thoroughly tested HTML widgets against **xaringan**. Some may work well, and some may not. It is a little tricky.
-
-Similarly, the Shiny mode (`runtime: shiny`) does not work. I might get these issues fixed in the future, but these are not of high priority to me. I never turn my presentation into a Shiny app. When I need to demonstrate more complicated examples, I just launch them separately. It is convenient to share slides with other people when they are plain HTML/JS applications.
-
-See the next page for two HTML widgets.
-
----
-
-
-```r
-library(leaflet)
-leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 17)
-```
-
-<div id="htmlwidget-aeca5728855e9a0b1383" style="width:100%;height:432px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-aeca5728855e9a0b1383">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[42.0285,-93.65],17,[]]},"evals":[],"jsHooks":[]}</script>
-
----
-
-
-```r
-DT::datatable(
-  head(iris, 10),
-  fillContainer = FALSE, options = list(pageLength = 8)
-)
-```
-
-<div id="htmlwidget-e1309db32d71b8534cfd" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e1309db32d71b8534cfd">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
-
----
-
-# Some Tips
-
-- Do not forget to try the `yolo` option of `xaringan::moon_reader`.
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        yolo: true
-    ```
-
----
-
-# Some Tips
-
-- Slides can be automatically played if you set the `autoplay` option under `nature`, e.g. go to the next slide every 30 seconds in a lightning talk:
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          autoplay: 30000
-    ```
-
-- If you want to restart the play after it reaches the last slide, you may set the sub-option `loop` to TRUE, e.g.,
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          autoplay:
-            interval: 30000
-            loop: true
-    ```
-
----
-
-# Some Tips
-
-- A countdown timer can be added to every page of the slides using the `countdown` option under `nature`, e.g. if you want to spend one minute on every page when you give the talk, you can set:
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          countdown: 60000
-    ```
-
-    Then you will see a timer counting down from `01:00`, to `00:59`, `00:58`, ... When the time is out, the timer will continue but the time turns red.
-    
----
-
-# Some Tips
-
-- The title slide is created automatically by **xaringan**, but it is just another remark.js slide added before your other slides.
-
-    The title slide is set to `class: center, middle, inverse, title-slide` by default. You can change the classes applied to the title slide with the `titleSlideClass` option of `nature` (`title-slide` is always applied).
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          titleSlideClass: [top, left, inverse]
-    ```
-    
 --
 
-- If you'd like to create your own title slide, disable **xaringan**'s title slide with the `seal = FALSE` option of `moon_reader`.
+- `push`: now without restriction for changes to `*.Rmd` files
 
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        seal: false
-    ```
+--
 
----
+- `schedule.cron`: See [Events that trigger workflows - GitHub Actions Docs](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule)
 
-# Some Tips
+--
 
-- There are several ways to build incremental slides. See [this presentation](https://slides.yihui.org/xaringan/incremental.html) for examples.
-
-- The option `highlightLines: true` of `nature` will highlight code lines that start with `*`, or are wrapped in `{{ }}`, or have trailing comments `#&lt;&lt;`;
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          highlightLines: true
-    ```
-
-    See examples on the next page.
+- **Question**: What's the cron syntax to run every Monday? Every 7th day?
 
 ---
 
-# Some Tips
+## Yet another Markup Language (YAML)
 
+### Modify `render-rmarkdown.yaml`, `on.workflow_dispatch`
 
-.pull-left[
-An example using a leading `*`:
+`.github/workflows/`[`render-rmarkdown.yaml`](https://github.com/bbest/gh-action-test-rmd/blob/main/.github/workflows/render-rmarkdown.yaml) (commit: latest)
 
-    ```r
-    if (TRUE) {
-    ** message("Very important!")
-    }
-    ```
-Output:
-```r
-if (TRUE) {
-* message("Very important!")
-}
-```
-
-This is invalid R code, so it is a plain fenced code block that is not executed.
-]
-
-.pull-right[
-An example using `{{}}`:
-
-````
-```{r tidy=FALSE}
-if (TRUE) {
-*{{ message("Very important!") }}
-}
-```
-````
-Output:
-
-```r
-if (TRUE) {
-* message("Very important!") 
-}
-```
-
-```
-## Very important!
-```
-
-It is valid R code so you can run it. Note that `{{}}` can wrap an R expression of multiple lines.
-]
-
----
-
-# Some Tips
-
-An example of using the trailing comment `#&lt;&lt;` to highlight lines:
-
-````markdown
-```{r tidy=FALSE}
-library(ggplot2)
-ggplot(mtcars) + 
-  aes(mpg, disp) + 
-  geom_point() +   #&lt;&lt;
-  geom_smooth()    #&lt;&lt;
-```
-````
-
-Output:
-
-
-```r
-library(ggplot2)
-ggplot(mtcars) + 
-  aes(mpg, disp) + 
-* geom_point() +
-* geom_smooth()
-```
-
----
-
-# Some Tips
-
-When you enable line-highlighting, you can also use the chunk option `highlight.output` to highlight specific lines of the text output from a code chunk. For example, `highlight.output = TRUE` means highlighting all lines, and `highlight.output = c(1, 3)` means highlighting the first and third line.
-
-````md
-```{r, highlight.output=c(1, 3)}
-head(iris)
-```
-````
-
-
-```
-*##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-## 1          5.1         3.5          1.4         0.2  setosa
-*## 2          4.9         3.0          1.4         0.2  setosa
-## 3          4.7         3.2          1.3         0.2  setosa
-## 4          4.6         3.1          1.5         0.2  setosa
-## 5          5.0         3.6          1.4         0.2  setosa
-## 6          5.4         3.9          1.7         0.4  setosa
-```
-
-Question: what does `highlight.output = c(TRUE, FALSE)` mean? (Hint: think about R's recycling of vectors)
-
----
-
-# Some Tips
-
-- To make slides work offline, you need to download a copy of remark.js in advance, because **xaringan** uses the online version by default (see the help page `?xaringan::moon_reader`).
-
-- You can use `xaringan::summon_remark()` to download the latest or a specified version of remark.js. By default, it is downloaded to `libs/remark-latest.min.js`.
-
-- Then change the `chakra` option in YAML to point to this file, e.g.
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        chakra: libs/remark-latest.min.js
-    ```
-
-- If you used Google fonts in slides (the default theme uses _Yanone Kaffeesatz_, _Droid Serif_, and _Source Code Pro_), they won't work offline unless you download or install them locally. The Heroku app [google-webfonts-helper](https://google-webfonts-helper.herokuapp.com/fonts) can help you download fonts and generate the necessary CSS.
-
----
-
-# Macros
-
-- remark.js [allows users to define custom macros](https://github.com/yihui/xaringan/issues/80) (JS functions) that can be applied to Markdown text using the syntax `![:macroName arg1, arg2, ...]` or `![:macroName arg1, arg2, ...](this)`. For example, before remark.js initializes the slides, you can define a macro named `scale`:
-
-    ```js
-    remark.macros.scale = function (percentage) {
-      var url = this;
-      return '&lt;img src="' + url + '" style="width: ' + percentage + '" /&gt;';
-    };
-    ```
-
-    Then the Markdown text
-
-    ```markdown
-    ![:scale 50%](image.jpg)
-    ```
-
-    will be translated to
-    
-    ```html
-    &lt;img src="image.jpg" style="width: 50%" /&gt;
-    ```
-
----
-
-# Macros (continued)
-
-- To insert macros in **xaringan** slides, you can use the option `beforeInit` under the option `nature`, e.g.,
-
-    ```yaml
-    output:
-      xaringan::moon_reader:
-        nature:
-          beforeInit: "macros.js"
-    ```
-
-    You save your remark.js macros in the file `macros.js`.
-
-- The `beforeInit` option can be used to insert arbitrary JS code before `remark.create()`. Inserting macros is just one of its possible applications.
-
----
-
-# CSS
-
-Among all options in `xaringan::moon_reader`, the most challenging but perhaps also the most rewarding one is `css`, because it allows you to customize the appearance of your slides using any CSS rules or hacks you know.
-
-You can see the default CSS file [here](https://github.com/yihui/xaringan/blob/master/inst/rmarkdown/templates/xaringan/resources/default.css). You can completely replace it with your own CSS files, or define new rules to override the default. See the help page `?xaringan::moon_reader` for more information.
-
----
-
-# CSS
-
-For example, suppose you want to change the font for code from the default "Source Code Pro" to "Ubuntu Mono". You can create a CSS file named, say, `ubuntu-mono.css`:
-
-```css
-@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-```
-
-Then set the `css` option in the YAML metadata:
 
 ```yaml
-output:
-  xaringan::moon_reader:
-    css: ["default", "ubuntu-mono.css"]
-```
+on:
+  push:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+```  
 
-Here I assume `ubuntu-mono.css` is under the same directory as your Rmd.
+--
 
-See [yihui/xaringan#83](https://github.com/yihui/xaringan/issues/83) for an example of using the [Fira Code](https://github.com/tonsky/FiraCode) font, which supports ligatures in program code.
-
----
-
-# Themes
-
-Don't want to learn CSS? Okay, you can use some user-contributed themes. A theme typically consists of two CSS files `foo.css` and `foo-fonts.css`, where `foo` is the theme name. Below are some existing themes:
-
-
-```r
-names(xaringan:::list_css())
-```
-
-```
-##  [1] "chocolate-fonts"  "chocolate"        "default-fonts"   
-##  [4] "default"          "duke-blue"        "fc-fonts"        
-##  [7] "fc"               "hygge-duke"       "hygge"           
-## [10] "ki-fonts"         "ki"               "kunoichi"        
-## [13] "lucy-fonts"       "lucy"             "metropolis-fonts"
-## [16] "metropolis"       "middlebury-fonts" "middlebury"      
-## [19] "nhsr-fonts"       "nhsr"             "ninjutsu"        
-## [22] "rladies-fonts"    "rladies"          "robot-fonts"     
-## [25] "robot"            "rutgers-fonts"    "rutgers"         
-## [28] "shinobi"          "tamu-fonts"       "tamu"            
-## [31] "uio-fonts"        "uio"              "uo-fonts"        
-## [34] "uo"               "uol-fonts"        "uol"             
-## [37] "useR-fonts"       "useR"
-```
+- `workflow_dispatch`: get [Actions button](https://github.com/bbest/gh-action-test-rmd/actions/workflows/render-rmarkdown.yaml) to run through Github web interface
+  ![](../images/gh-action_workflow-dispatch.png)
 
 ---
 
-# Themes
+## Github Actions Summary
 
-To use a theme, you can specify the `css` option as an array of CSS filenames (without the `.css` extensions), e.g.,
+With Github Actions, you can:
 
-```yaml
-output:
-  xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts]
-```
+- Spin up a dedicated machine to crunch data and update your reports!
 
-If you want to contribute a theme to **xaringan**, please read [this blog post](https://yihui.org/en/2017/10/xaringan-themes).
+--
 
----
-class: inverse, middle, center
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/3/39/Naruto_Shiki_Fujin.svg)
-background-size: contain
+- For FREE!
 
-# Naruto
+--
 
----
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
-background-size: 100px
-background-position: 90% 8%
+- Within limits: ~ 1 hr with ~ 1 GB and small CPU
 
-# Sharingan
-
-The R package name **xaringan** was derived&lt;sup&gt;1&lt;/sup&gt; from **Sharingan**, a dōjutsu in the Japanese anime _Naruto_ with two abilities:
-
-- the "Eye of Insight"
-
-- the "Eye of Hypnotism"
-
-I think a presentation is basically a way to communicate insights to the audience, and a great presentation may even "hypnotize" the audience.&lt;sup&gt;2,3&lt;/sup&gt;
-
-.footnote[
-[1] In Chinese, the pronounciation of _X_ is _Sh_ /ʃ/ (as in _shrimp_). Now you should have a better idea of how to pronounce my last name _Xie_.
-
-[2] By comparison, bad presentations only put the audience to sleep.
-
-[3] Personally I find that setting background images for slides is a killer feature of remark.js. It is an effective way to bring visual impact into your presentations.
-]
 
 ---
 
-# Naruto terminology
+## More Actions...
 
-The **xaringan** package borrowed a few terms from Naruto, such as
+- `usethis::`[`use_github_action()`](https://usethis.r-lib.org/reference/use_github_action.html)
+  - [r-lib/actions: examples/](https://github.com/r-lib/actions/tree/master/examples#example-workflows)
 
-- [Sharingan](https://naruto.fandom.com/wiki/Sharingan) (写輪眼; the package name)
+--
 
-- The [moon reader](https://naruto.fandom.com/wiki/Moon_Reader) (月読; an attractive R Markdown output format)
+RMarkdown workflows:
 
-- [Chakra](https://naruto.fandom.com/wiki/Chakra) (查克拉; the path to the remark.js library, which is the power to drive the presentation)
-
-- [Nature transformation](https://naruto.fandom.com/wiki/Nature_Transformation) (性質変化; transform the chakra by setting different options)
-
-- The [infinite moon reader](https://naruto.fandom.com/wiki/Infinite_Tsukuyomi) (無限月読; start a local web server to continuously serve your slides)
-
-- The [summoning technique](https://naruto.fandom.com/wiki/Summoning_Technique) (download remark.js from the web)
-
-You can click the links to know more about them if you want. The jutsu "Moon Reader" may seem a little evil, but that does not mean your slides are evil.
-
----
-
-class: center
-
-# Hand seals (印)
-
-Press `h` or `?` to see the possible ninjutsu you can use in remark.js.
-
-![](https://upload.wikimedia.org/wikipedia/commons/7/7e/Mudra-Naruto-KageBunshin.svg)
+- [`render-rmarkdown`](https://github.com/r-lib/actions/tree/master/examples#render-rmarkdown) - Render one or more Rmarkdown files when they change and commit the result.
+- [`bookdown`](https://github.com/r-lib/actions/tree/master/examples#build-bookdown-site) - Build a [bookdown] site and deploy it to [netlify].
+- [`blogdown`](https://github.com/r-lib/actions/tree/master/examples#build-blogdown-site) - Build a [blogdown] site and deploy it to [netlify].
 
 ---
 
@@ -743,9 +283,19 @@ class: center, middle
 
 # Thanks!
 
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+Example&lt;br&gt;
+[github.com/bbest/gh-action-test-rmd](https://github.com/bbest/gh-action-test-rmd)&lt;br&gt; ([starlog](http://starlogs.net/#bbest/gh-action-test-rmd) ✨)
 
-The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr/), and [R Markdown](https://rmarkdown.rstudio.com).
+.small[
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan) and [R Markdown](https://rmarkdown.rstudio.com).
+]
+
+[GitHub Pages]: https://pages.github.com/
+[renv]: https://rstudio.github.io/renv/
+[pkgdown]: https://pkgdown.r-lib.org/
+[bookdown]: https://bookdown.org
+[blogdown]: https://bookdown.org/yihui/blogdown/
+[netlify]: https://www.netlify.com/
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -836,6 +386,33 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
+<style>
+.logo {
+  background-image: url(../images/logo_Bren-circular.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  width: 70px;
+  height: 70px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
 
 <script>
 slideshow._releaseMath = function(el) {

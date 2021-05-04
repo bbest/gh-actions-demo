@@ -35,8 +35,8 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-Slides...
+### Slides
 
-## Slides
+<a href="./slides/" target="_blank" class="fa fa-external-link"> Slides</a>
 
-`r knitr::include_url("./slides/index.html")`
+<!-- r `knitr::include_url("./slides/index.html")` -->
