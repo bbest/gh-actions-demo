@@ -161,13 +161,13 @@ DiagrammeR::grViz("
     graph [layout = dot, rankdir = LR]
   
     node [shape = box, fontname = Helvetica, fontsize=20, height = 2 width = 2]
-    PC; Github
+    EIA;PC; Github
   
     node [shape = circle]
     git [label = 'git push']
   
     # several 'edge' statements
-    PC->git->Github
+    EIA->PC->git->Github
   }", height = 100)
 ```
 
@@ -184,13 +184,13 @@ DiagrammeR::grViz("
     graph [layout = dot, rankdir = LR]
   
     node [shape = box, fontname = Helvetica, fontsize=20, height = 2 width = 2]
-    Github
+    EIA;Github
   
     node [shape = circle, height = 1]
     git [label = 'Github Action']
   
     # several 'edge' statements
-    Github->git->Github
+    Github->git->EIA->Github
   }", height = 100)
 ```
 
