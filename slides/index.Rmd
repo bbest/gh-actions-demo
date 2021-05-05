@@ -276,7 +276,7 @@ on:
 
 --
 
-- **Question**: What's the cron syntax to run every Monday? Every 7th day?
+- **Question**: What's the cron syntax to run every Monday? Every 8th day?
 
 ---
 
@@ -334,16 +334,22 @@ RMarkdown workflows:
 
 ---
 
-class: center, middle
+class: center, middle, inverse
 
 # Thanks!
+
+```{css, echo=FALSE}
+h2 { text-align: center }
+```
+
+## Questions / Comments ?
 
 Example<br>
 [github.com/bbest/gh-action-test-rmd](https://github.com/bbest/gh-action-test-rmd)<br> ([starlog](http://starlogs.net/#bbest/gh-action-test-rmd) `r emo::ji("sparkles")`)
 
-.small[
+.bottom[.right[.small[
 Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan) and [R Markdown](https://rmarkdown.rstudio.com).
-]
+]]]
 
 [GitHub Pages]: https://pages.github.com/
 [renv]: https://rstudio.github.io/renv/

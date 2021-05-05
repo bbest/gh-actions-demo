@@ -1,2 +1,7 @@
-.large { font-size: 130% }
-.small { font-size: 70% }
+.large  { font-size: 130% }
+.small  { font-size: 70% }
+.bottom {
+  position: absolute;
+  bottom: 1em;
+}
+
